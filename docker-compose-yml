@@ -1,0 +1,32 @@
+services:
+  . . .
+  wireguard:
+    image: ghcr.io/linuxserver/wireguard
+    container_name: wireguard
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      # Required for both client & server mode
+      # - PUID=1000
+      # - PGID=1000
+      - TZ=America/New_York
+      # Required for Server mode
+      - SERVERURL=<fqdn-vps> # or 'auto'
+      - SERVERPORT=51820 
+      - PEERS=home-server,laptop
+      # DNS server set in peer/client configs (e.g. 8.8.8.8)
+      # auto: default; uses docker host's DNS via included CoreDNS forward
+      - PEERDNS=auto
+      - INTERNAL_SUBNET=10.13.13.0
+      # No split tunneling
+      # - ALLOWEDIPS=0.0.0.0/0
+      # Split tunneling
+      - ALLOWEDIPS=10.13.13.1/32,10.13.13.2/32,10.13.13.3/32
+    volumes:
+      - /bu/cv/wireguard/config:/config
+      - /lib/modules:/lib/modules
+    ports:
+      - 51820:51820/udp
+    restart: unless-stopped
+  . . .

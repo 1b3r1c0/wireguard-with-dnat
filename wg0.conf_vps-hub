@@ -1,0 +1,19 @@
+[Interface]
+Address = 10.13.13.1
+ListenPort = 51820
+PrivateKey = (bitwarden - VPS)
+# PublicKey = (bitwarden - VPS)
+PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+
+[Peer]
+# peer_home-server
+PublicKey = (bitwarden - home-server)
+AllowedIPs = 10.13.13.2/32
+PersistentKeepalive = 25
+
+[Peer]
+# peer_laptop
+AllowedIPs = 10.13.13.3/32
+PublicKey = (bitwarden - laptop)
+PersistentKeepalive = 25

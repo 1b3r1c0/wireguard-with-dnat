@@ -1,0 +1,12 @@
+[Interface]
+Address = 10.13.13.2
+PrivateKey = (bitwarden - home-server)
+# PublicKey = (bitwarden - home-server)
+ListenPort = 51820
+
+[Peer]
+# Hub - linode VPS
+PublicKey = (bitwarden - VPS)
+Endpoint = <fqdn-vps>:51820
+AllowedIPs = 10.13.13.0/24
+PersistentKeepalive = 25

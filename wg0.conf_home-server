@@ -1,12 +1,17 @@
 [Interface]
+# Home Server
 Address = 10.13.13.2
 PrivateKey = (bitwarden - home-server)
 # PublicKey = (bitwarden - home-server)
 ListenPort = 51820
+# DNAT VNC connections to the lo0 interface
+PostUp =   iptables -t nat -A PREROUTING -i %i -p tcp -m tcp --dport 5900:5910 -j DNAT --to-destination 127.0.0.1
+# Remove the DNAT
+PostDown = iptables -t nat -D PREROUTING -i %i -p tcp -m tcp --dport 5900:5910 -j DNAT --to-destination 127.0.0.1
 
 [Peer]
-# Hub - linode VPS
+# Hub - <FQDN>, linode VPS
 PublicKey = (bitwarden - VPS)
-Endpoint = <fqdn-vps>:51820
+Endpoint = <FQDN>:51820
 AllowedIPs = 10.13.13.0/24
 PersistentKeepalive = 25
